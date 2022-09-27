@@ -16,7 +16,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::get();
-        return view('User/index');
+        return view('User/index', compact('users'));
         // return response()->json([
         //     'data' => $users
         // ]);
@@ -40,7 +40,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $users = User::create([
+            'name' => request('name'),
+            'phone_number' => request('phone_number'),
+            'email'  => request('email'),
+            'password' => bcrypt($request->password),
+        ]);
+        return view('User/index', compact('users'));
     }
 
     /**

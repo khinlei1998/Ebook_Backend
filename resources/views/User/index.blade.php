@@ -31,11 +31,15 @@
                   </tr>
                 </thead>
                 <tbody>
+                    @php 
+                    $i = 1;
+                  @endphp
+                   @foreach($users as $user)
                   <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>023232</td>
-                    <td>gg@gmal.com</td>
+                   <td>{{$i++}}</td>
+                    <td>{{$user->name}}</td>
+                    <td>{{$user->phone_number}}</td>
+                    <td>{{$user->email}}</td>
                     <td>
                         <a href="#" style=""class="btn btn-success"><i class="fas fa-pencil-alt"></i> &nbsp; Edit
                           </a>
@@ -43,6 +47,7 @@
                     
                       </td>
                   </tr>
+                  @endforeach
                  
                 </tbody>
                 <tfoot>
