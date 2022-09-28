@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Category;
 
-
-class UserController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(6);
-        return view('User.index', compact('users'));
+        $categories = Category::paginate(6);
+        return view('category.index', compact('categories'));
     }
 
     /**
@@ -26,8 +25,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        return view('User.create', compact('users'));
+        $categories = Category::all();
+        return view('category.create', compact('categories'));
     }
 
     /**
@@ -38,23 +37,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'name' => 'required',
-            'phone_number'  => 'required',
-            'email' => 'required|unique:users|email',
-            'password'  => 'required |min:8|'
 
         ]);
 
-        $users = User::create([
+        $categories = Category::create([
             'name' => request('name'),
-            'phone_number' => request('phone_number'),
-            'email'  => request('email'),
-            'password' => bcrypt($request->password),
+
         ]);
         // return view('user.index', compact('users'));
-        return redirect()->route('admin.users.index')->with("notification", 'Created Successfully');
+        return redirect()->route('admin.category.index')->with("notification", 'Created Successfully');
     }
 
     /**
@@ -76,10 +69,10 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $users = User::find($id);
+        $categories = Category::find($id);
         return view(
-            'User.edit',
-            compact('users')
+            'category.edit',
+            compact('categories')
         );
     }
 
@@ -94,20 +87,16 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'phone_number'  => 'required',
-            'email' => 'required|email',
+
 
 
         ]);
-        $user = User::find($id);
-        $user->name = request('name');
+        $category = Category::find($id);
+        $category->name = request('name');
 
-        $user->phone_number = request('phone_number');
 
-        $user->email = request('email');
-
-        $user->save();
-        return redirect()->route('admin.users.index')->with("notification", 'Updated Successfully');
+        $category->save();
+        return redirect()->route('admin.category.index')->with("notification", 'Updated Successfully');
     }
 
     /**
@@ -118,8 +107,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->delete();
+        $category = Category::find($id);
+        $category->delete();
         return back()->with("notification", 'Deleted Successfully');
     }
 }

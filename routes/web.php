@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
@@ -23,6 +24,7 @@ Route::group(
             return view('welcome');
         });
         Route::resource('users', UserController::class);
+        Route::resource('category', CategoryController::class);
         Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     }
 );
