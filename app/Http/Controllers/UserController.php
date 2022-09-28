@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(6);
         return view('User.index', compact('users'));
         // return response()->json([
         //     'data' => $users
@@ -41,6 +41,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'name' => 'required',
+            'phone_number'  => 'required',
+            'email' => 'required|unique:users|email',
+            'password'  => 'required |min:8|'
+
+        ]);
+
         $users = User::create([
             'name' => request('name'),
             'phone_number' => request('phone_number'),
@@ -48,7 +57,7 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
         ]);
         // return view('user.index', compact('users'));
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.users.index')->with("notification", 'Created Successfully');
     }
 
     /**
@@ -86,6 +95,13 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required',
+            'phone_number'  => 'required',
+            'email' => 'required|email',
+
+
+        ]);
         $user = User::find($id);
         $user->name = request('name');
 
@@ -94,7 +110,7 @@ class UserController extends Controller
         $user->email = request('email');
 
         $user->save();
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.users.index')->with("notification", 'Updated Successfully');
     }
 
     /**
@@ -107,8 +123,6 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        $users = User::all();
-        // return back()->with("notification", 'Deleted Successfully');
-        return view('User.index', compact('users'));
+        return back()->with("notification", 'Deleted Successfully');
     }
 }

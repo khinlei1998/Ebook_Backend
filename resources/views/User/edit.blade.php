@@ -22,10 +22,16 @@
                 <div class="mb-3">
                   <label  class="form-label">Name</label>
                   <input type="text" class="form-control" name="name"value="{{$users->name}}" >
+                  @error('name')
+                  <div class="text-danger" style="">{{ $message }}</div>
+                  @enderror
                 </div>
                 <div class="mb-3">
                   <label  class="form-label">Phone Number</label>
                   <input name="phone_number" type="text" class="form-control" value="{{$users->phone_number}}" >
+                  @error('phone_number')
+                  <div class="text-danger" style="">{{ $message }}</div>
+                  @enderror
                 </div>
 
                 {{-- <div class="mb-3">
@@ -36,6 +42,9 @@
                   <div class="mb-3">
                     <label  class="form-label">Email</label>
                     <input name="email" type="text" class="form-control" value="{{$users->email}}" >
+                    @error('email')
+                    <div class="text-danger" style="">{{ $message }}</div>
+                    @enderror
                   </div>
                
                 <button type="submit" class="btn btn-primary">Update</button>
