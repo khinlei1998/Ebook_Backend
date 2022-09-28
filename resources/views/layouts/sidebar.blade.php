@@ -34,6 +34,13 @@
              
             </p>
           </a>
+          <a href="{{route('admin.authors.index')}}" class="nav-link">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              Authors
+             
+            </p>
+          </a>
         </li>
       </ul>
     </nav>
