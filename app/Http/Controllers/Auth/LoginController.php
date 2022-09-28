@@ -2,44 +2,52 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function login(Request $request)
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
+
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    // protected $redirectTo = RouteServiceProvider::HOME;
+    protected function authenticated($request, $user)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        $user = User::where('email', $request->email)->first();
-   
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response('Login invalid', 503);
-        }
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $user,
-            "access_token" => 'Bearer ' . $user->createToken('Personal Access Token', ['admin'])->plainTextToken,
-        ]);
+        return redirect()->intended('/backend/users');
     }
-    
-    public function logout()
-    {
-        auth()->user()->tokens()->delete();
-        // if(auth()->user()->tokens()){
-        //     return 'token has';
-        // }else{
-        //     return 'no token';
-        // }
 
-        return response()->json([
-            'status' => 'success',
-        ]);
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+    public function logout(Request $request)
+    {
+
+        Auth::logout();
+        return redirect('/login');
     }
 }

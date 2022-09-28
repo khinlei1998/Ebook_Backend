@@ -14,7 +14,19 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::resource('users', UserController::class);
+Route::group(
+    [
+        'prefix' => 'backend', 'as' => 'admin.'
+    ],
+    function () {
+        Route::get('/', function () {
+            return view('welcome');
+        });
+        Route::resource('users', UserController::class);
+        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    }
+);
+
+Auth::routes();
+
+Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);

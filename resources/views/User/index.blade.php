@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.maintemplades')
 @section('content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -7,7 +7,7 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0">User Management</h1>
-            <a href="{{route('users.create')}}"  class="btn btn-primary btn-circle btnadd" >Add User</a>
+            <a href="{{route('admin.users.create')}}"  class="btn btn-primary btn-circle btnadd" >Add User</a>
           </div>
          
         </div>
@@ -34,6 +34,7 @@
                     @php 
                     $i = 1;
                   @endphp
+                 
                    @foreach($users as $user)
                   <tr>
                    <td>{{$i++}}</td>
@@ -41,10 +42,13 @@
                     <td>{{$user->phone_number}}</td>
                     <td>{{$user->email}}</td>
                     <td>
-                        <a href="#" style=""class="btn btn-success"><i class="fas fa-pencil-alt"></i> &nbsp; Edit
+                        <a href="{{route('admin.users.edit', $user->id)}}" style=""class="btn btn-success"><i class="fas fa-pencil-alt"></i> &nbsp; Edit
                           </a>
+                          <form style="float:left" action="{{route('admin.users.destroy',$user->id)}}" method="post">
+                            @method('DELETE')
+                            @csrf
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> &nbsp;Delete </button>
-                    
+                        </form>
                       </td>
                   </tr>
                   @endforeach

@@ -15,8 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
-        return view('User/index', compact('users'));
+        $users = User::all();
+        return view('User.index', compact('users'));
         // return response()->json([
         //     'data' => $users
         // ]);
@@ -29,7 +29,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('User/create');
+        $users = User::all();
+        return view('User.create', compact('users'));
     }
 
     /**
@@ -46,7 +47,8 @@ class UserController extends Controller
             'email'  => request('email'),
             'password' => bcrypt($request->password),
         ]);
-        return view('User/index', compact('users'));
+        // return view('user.index', compact('users'));
+        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -68,7 +70,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $users = User::find($id);
+        return view(
+            'User.edit',
+            compact('users')
+        );
     }
 
     /**
@@ -80,7 +86,15 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+        $user->name = request('name');
+
+        $user->phone_number = request('phone_number');
+
+        $user->email = request('email');
+
+        $user->save();
+        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -91,6 +105,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        $user->delete();
+        $users = User::all();
+        // return back()->with("notification", 'Deleted Successfully');
+        return view('User.index', compact('users'));
     }
 }
