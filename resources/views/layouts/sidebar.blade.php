@@ -38,6 +38,28 @@
             </p>
           </a>
         </li>
+
+        <li class="nav-item">
+          <a href="{{route('admin.subcategory.index')}}" class="nav-link">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              SubCategory
+             
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{route('admin.subcategory.index')}}" class="nav-link">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              Product Management
+             
+            </p>
+          </a>
+        </li>
+
+
       </ul>
     </nav>
     <!-- /.sidebar-menu -->
