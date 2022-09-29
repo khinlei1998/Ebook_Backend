@@ -28,6 +28,7 @@
                   <tr>
                     <th scope="col">No</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -40,6 +41,9 @@
                   <tr>
                     <td>{{$i++}}</td>
                     <td>{{$author->name}}</td>
+                    <td>
+                      <img src="{{$author->image}}" width="80" height="80">
+                    </td>
                     <td>
                         <a href="{{route('admin.authors.edit', $author->id)}}" style="" class="btn btn-success"><i class="fas fa-pencil-alt"></i> &nbsp; Edit
                           </a>

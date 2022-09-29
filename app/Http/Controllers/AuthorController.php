@@ -23,7 +23,7 @@ class AuthorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()   
+    public function create()
     {
         return view('Author.create');
     }
@@ -36,8 +36,22 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+        $request->validate([
+            'name' => 'required|min:2',
+            'image' => 'required',
+
+        ]);
+        if ($request->hasfile('image')) {
+            $image = $request->file('image');
+            $name = $image->getClientOriginalName();
+            $image->move(public_path() . '/author_image', $name);
+
+            $image = '/author_image/' . $name;
+        }
         Author::create([
-            'name' => request('name')
+            'name' => request('name'),
+            'image' => $image,
         ]);
         return redirect()->route('admin.authors.index');
     }
@@ -74,8 +88,22 @@ class AuthorController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required|min:2',
+
+        ]);
+        if ($request->hasfile('image')) {
+            $image = $request->file('image');
+            $name = $image->getClientOriginalName();
+            $image->move(public_path() . '/author_image', $name);
+
+            $image = '/author_image/' . $name;
+        } else {
+            $image = request('oldimg');
+        }
         $author = Author::find($id);
         $author->name = request('name');
+        $author->image = $image;
         $author->save();
         return redirect()->route('admin.authors.index');
     }

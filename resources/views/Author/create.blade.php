@@ -16,13 +16,19 @@
       <div class="container-fluid">
         <div class="row">
         
-            <form  action="{{route('admin.authors.store')}}" method="POST" >
+            <form enctype="multipart/form-data"  action="{{route('admin.authors.store')}}" method="POST" >
                 @csrf
                 <div class="mb-3">
                   <label  class="form-label">Name</label>
                   <input type="text" class="form-control" name="name" >
                 </div>
-               
+
+                <div class="mb-3">
+                  <label  class="form-label">Image</label>
+                  <input type="file" name="image" class="form-control" >                </div>
+                  @error('image')
+                  <div class="text-danger" style="">{{ $message }}</div>
+                  @enderror
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
