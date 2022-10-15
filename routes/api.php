@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\BookController;
+use App\Http\Controllers\MobileAPIControllers\BookController;
 use App\Http\Controllers\MobileAPIControllers\AuthorController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\MobileAPIControllers\CategoryController;
+use App\Http\Controllers\MobileAPIControllers\SubCategoryController;
+use App\Http\Controllers\MobileAPIControllers\UserController;
+// use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('admin_login', [LoginController::class, 'login']);
-Route::resource('books', BookController::class, ['only' => ['index', 'show']]);
+// Route::resource('books', BookController::class, ['only' => ['index', 'show']]);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('admin_logout', [LoginController::class, 'logout']);
@@ -34,3 +37,19 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::resource('authors', AuthorController::class);
 Route::post('authors/{id}', 'App\Http\Controllers\MobileAPIControllers\AuthorController@update');
 Route::post('authors/delete/{id}', 'App\Http\Controllers\MobileAPIControllers\AuthorController@destroy');
+
+Route::resource('books', BookController::class);
+Route::post('books/{id}', 'App\Http\Controllers\MobileAPIControllers\BookController@update');
+Route::post('books/delete/{id}', 'App\Http\Controllers\MobileAPIControllers\BookController@destroy');
+
+Route::resource('category', CategoryController::class);
+Route::post('category/{id}', 'App\Http\Controllers\MobileAPIControllers\CategoryController@update');
+Route::post('category/delete/{id}', 'App\Http\Controllers\MobileAPIControllers\CategoryController@destroy');
+
+Route::resource('subcategory', SubCategoryController::class);
+Route::post('subcategory/{id}', 'App\Http\Controllers\MobileAPIControllers\SubCategoryController@update');
+Route::post('subcategory/delete/{id}', 'App\Http\Controllers\MobileAPIControllers\SubCategoryController@destroy');
+
+Route::resource('users', UserController::class);
+Route::post('users/{id}', 'App\Http\Controllers\MobileAPIControllers\UserController@update');
+Route::post('users/delete/{id}', 'App\Http\Controllers\MobileAPIControllers\UserController@destroy');

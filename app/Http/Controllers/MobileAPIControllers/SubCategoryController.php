@@ -4,9 +4,10 @@ namespace App\Http\Controllers\MobileAPIControllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Author;
+use App\Models\SubCategory;
+use App\Models\Category;
 
-class AuthorController extends Controller
+class SubCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +16,10 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::all();
+        $subcategories = SubCategory::all();
         return response()->json([
-            'status' => 'success',
-            'data' => $authors
+            'data' => $subcategories,
+            'status' => 'success'
         ]);
     }
 
@@ -41,24 +42,19 @@ class AuthorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|min:2',
-            'image' => 'required',
+            'sub_category_name' => 'required',
+            'category_id' => 'required',
 
         ]);
-        if ($request->hasfile('image')) {
-            $image = $request->file('image');
-            $name = $image->getClientOriginalName();
-            $image->move(public_path() . '/author_image', $name);
 
-            $image = '/author_image/' . $name;
-        }
-        $author = Author::create([
-            'name' => request('name'),
-            'image' => $image,
+        $subcategory = SubCategory::create([
+            'sub_category_name' => request('sub_category_name'),
+            'category_id' => request('category_id'),
+
         ]);
         return response()->json([
-            'status' => 'success',
-            'data' => $author
+            'data' => $subcategory,
+            'status' => 'success'
         ]);
     }
 
@@ -70,9 +66,10 @@ class AuthorController extends Controller
      */
     public function show($id)
     {
-        $author = Author::findOrFail($id);
+        $sub_category = SubCategory::findOrFail($id);
+
         return response()->json([
-            'data' => $author,
+            'data' => $sub_category,
             'status' => 'success'
         ]);
     }
@@ -98,25 +95,19 @@ class AuthorController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|min:2',
+            'sub_category_name' => 'required',
+            'category_id' => 'required'
+
         ]);
-        if ($request->hasfile('image')) {
-            $image = $request->file('image');
-            $name = $image->getClientOriginalName();
-            $image->move(public_path() . '/author_image', $name);
 
-            $image = '/author_image/' . $name;
-        } else {
-            $image = request('oldimg');
-        }
-        $author = Author::find($id);
-        $author->name = request('name');
-        $author->image = $image;
-        $author->save();
+        $subcategories = SubCategory::find($id);
+        $subcategories->sub_category_name = request('sub_category_name');
+        $subcategories->category_id = request('category_id');
 
+        $subcategories->save();
         return response()->json([
-            'status' => 'success',
-            'data' => $author
+            'data' => $subcategories,
+            'status' => 'success'
         ]);
     }
 
@@ -128,7 +119,8 @@ class AuthorController extends Controller
      */
     public function destroy($id)
     {
-        Author::find($id)->delete();
+        $subcategories = SubCategory::find($id);
+        $subcategories->delete();
         return response()->json([
             'status' => 'success',
             'data' => 'Successfully deleted authors!'
